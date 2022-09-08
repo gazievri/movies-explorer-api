@@ -1,15 +1,19 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routerUsers = require('./routes/users');
 const routerMovies = require('./routes/movies');
 const NotFoundError = require('./errors/not-found-errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { corsOptions } = require('./utils/corsOptions');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(cors()); // включить опции после создания сервера и подключения домена
 
 app.use(cookieParser());
 
