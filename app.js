@@ -2,12 +2,14 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const routerUsers = require('./routes/users');
 const routerMovies = require('./routes/movies');
 const NotFoundError = require('./errors/not-found-errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { corsOptions } = require('./utils/corsOptions');
+const { handleError } = require('./utils/handleError');
 
 const { PORT = 3000 } = process.env;
 
@@ -34,6 +36,10 @@ app.all('/*', () => {
 });
 
 app.use(errorLogger); // подключаем логгер ошибок
+
+app.use(errors());
+
+app.use(handleError);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

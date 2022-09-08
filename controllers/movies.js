@@ -61,12 +61,11 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.deleteMovieById = (req, res, next) => {
   const { movieId } = req.params;
+  const user = req.user._id;
 
-  Movie.findById(movieId)
+  Movie.find({ movieId, owner: user })
     .then((movie) => {
-      if (!movie) { throw new NotFoundError('Movie not found'); }
-      // eslint-disable-next-line eqeqeq
-      if (movie.owner != req.user._id) { throw new ForbiddenError('You can not delete not yours movies'); }
+      if (movie.length === 0) { throw new NotFoundError('Movie not found'); }
       return movie.remove();
     })
     .then(() => {

@@ -27,9 +27,9 @@ routerMovies.post('/movies', celebrate({
   }),
 }), auth, addMovie);
 
-routerMovies.delete('/movies/_id', celebrate({
+routerMovies.delete('/movies/:movieId', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().custom(validateId, 'ObjectId validation'),
+    movieId: Joi.number(),
   }),
 }), auth, deleteMovieById);
 
