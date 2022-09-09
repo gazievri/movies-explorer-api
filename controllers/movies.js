@@ -1,7 +1,6 @@
 const Movie = require('../models/movie');
 const BadRequestError = require('../errors/bad-request-errors');
 const NotFoundError = require('../errors/not-found-errors');
-const ForbiddenError = require('../errors/forbidden-errors');
 
 const {
   STATUS_CREATED,

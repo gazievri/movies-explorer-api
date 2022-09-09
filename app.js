@@ -12,6 +12,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { corsOptions } = require('./utils/corsOptions');
 const { handleError } = require('./utils/handleError');
 const { limiter } = require('./utils/limiter');
+const { MONGODB_SERVER } = require('./utils/config');
 
 const { PORT = 3000 } = process.env;
 
@@ -27,7 +28,7 @@ app.use(cookieParser());
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(MONGODB_SERVER, {
   useNewUrlParser: true,
 });
 
