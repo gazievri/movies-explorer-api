@@ -19,11 +19,10 @@ routerUsers.patch('/users/me', celebrate({
         'string.min': 'Name must contain at least of 2 characters',
         'string.max': 'Name must be no more than 30 characters',
       }),
-    password: Joi.string().min(6).max(30)
+    email: Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: false } })
       .messages({
-        'string.required': 'Password has to be filled',
-        'string.min': 'Password must be at least 6 characters',
-        'string.pattern': 'Password must contain numbers or letters',
+        'string.required': 'Email has to be filled',
+        'string.email': 'Email must be real email',
       }),
   }),
 }), auth, updateUser);
