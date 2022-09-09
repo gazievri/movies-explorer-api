@@ -90,3 +90,8 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.signout = (req, res) => {
+  const userId = req.user._id;
+  res.status(STATUS_OK).clearCookie('authorization').send({ message: `Signout id ${userId} is successful` });
+};

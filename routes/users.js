@@ -7,6 +7,7 @@ const {
   login,
   getUserInfo,
   updateUser,
+  signout,
 } = require('../controllers/users');
 
 routerUsers.get('/users/me', auth, getUserInfo);
@@ -65,8 +66,6 @@ routerUsers.post('/signin', celebrate({
   }),
 }), login);
 
-routerUsers.get('/signout', (req, res) => {
-  res.clearCookie('authorization').send({ message: 'Signout is successful' });
-}, auth);
+routerUsers.get('/signout', auth, signout);
 
 module.exports = routerUsers;
