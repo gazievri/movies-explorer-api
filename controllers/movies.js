@@ -62,16 +62,16 @@ module.exports.deleteMovieById = (req, res, next) => {
   const { movieId } = req.params;
   const user = req.user._id;
 
-  Movie.find({ movieId, owner: user })
-    .then((movie) => {
-      if (movie.length === 0) { throw new NotFoundError('Movie not found'); }
-      return movie.remove();
+  Movie.find({ owner: user, movieId })
+    .then((item) => {
+      if (item.length === 0) { throw new NotFoundError('Movie not found'); }
+      return item[0].remove();
     })
     .then(() => {
       res.status(STATUS_OK).send({ message: `Movie ${movieId} has been removed` });
     })
     .catch((err) => {
-      if (err.name === 'CastError') { // если формата id фильма севльного нет, удалить условие и ошибку
+      if (err.name === 'CastError') { // если формата id фильма специального нет, удалить условие и ошибку
         next(new BadRequestError('Movie ID is incorrect'));
         return;
       }

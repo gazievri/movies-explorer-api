@@ -67,8 +67,10 @@ const cardSchema = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
+    type: String,
     required: true,
-    type: Number,
+    minlength: 1,
+    maxlength: 100,
   },
   nameRU: {
     type: String,

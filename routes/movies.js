@@ -68,21 +68,22 @@ routerMovies.post('/movies', celebrate({
         'string.required': 'Field has to be filled',
         'string.pattern': 'Field must be a link',
       }),
-    movieId: Joi.number().required().min(1) // проверить формат и исправить валидацию
+    movieId: Joi.string().required().min(1).max(100) // проверить формат и исправить валидацию
       .messages({
-        'number.required': 'Field has to be filled',
-        'number.min': 'Field must contain at least of 1 characters',
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
       }),
   }),
 }), auth, addMovie);
 
 routerMovies.delete('/movies/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required().min(1).max(100)
+    movieId: Joi.string().required().min(1).max(100)
       .messages({
-        'number.required': 'Field has to be filled',
-        'number.min': 'Field must contain at least of 1 characters',
-        'number.max': 'Field must be no more than 100 characters',
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
       }),
   }),
 }), auth, deleteMovieById);
