@@ -1,4 +1,4 @@
-const MONGODB_SERVER = 'mongodb://localhost:27017/moviesdb';
+const MONGODB_SERVER = 'mongodb://127.0.0.1/moviesdb';
 const JWT_PRODUCTION_KEY = 'dev-secret';
 
 module.exports = {
