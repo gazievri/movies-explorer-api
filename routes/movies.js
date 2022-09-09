@@ -1,7 +1,6 @@
 const routerMovies = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const auth = require('../middlewares/auth');
-const { validateId } = require('../utils/validateId');
 
 const {
   addMovie,
@@ -13,23 +12,80 @@ routerMovies.get('/movies', auth, getAllUserMovies);
 
 routerMovies.post('/movies', celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(1).max(100),
-    director: Joi.string().required().min(1).max(100),
-    duration: Joi.number().required().min(1).max(100), // проверить формат и исправить валидацию
-    year: Joi.number().required().min(2).max(4),
-    description: Joi.string().required().min(1).max(100),
-    image: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/),
-    trailerLink: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/),
-    nameRU: Joi.string().required().min(1).max(100),
-    nameEN: Joi.string().required().min(1).max(100),
-    thumbnail: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/),
-    movieId: Joi.number().required().min(1).max(100), // проверить формат и исправить валидацию
+    country: Joi.string().required().min(1).max(100)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
+      }),
+    director: Joi.string().required().min(1).max(100)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
+      }),
+    duration: Joi.number().required().min(1).max(100) // проверить формат и исправить валидацию
+      .messages({
+        'number.required': 'Field has to be filled',
+        'number.min': 'Field must contain at least of 1 characters',
+        'number.max': 'Field must be no more than 100 characters',
+      }),
+    year: Joi.number().required().min(2).max(4)
+      .messages({
+        'number.required': 'Field has to be filled',
+        'number.min': 'Field must contain at least of 2 characters',
+        'number.max': 'Field must be no more than 4 characters',
+      }),
+    description: Joi.string().required().min(1).max(100)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
+      }),
+    image: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.pattern': 'Field must be a link',
+      }),
+    trailerLink: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.pattern': 'Field must be a link',
+      }),
+    nameRU: Joi.string().required().min(1).max(100)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
+      }),
+    nameEN: Joi.string().required().min(1).max(100)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.min': 'Field must contain at least of 1 characters',
+        'string.max': 'Field must be no more than 100 characters',
+      }),
+    thumbnail: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+      .messages({
+        'string.required': 'Field has to be filled',
+        'string.pattern': 'Field must be a link',
+      }),
+    movieId: Joi.number().required().min(1).max(100) // проверить формат и исправить валидацию
+      .messages({
+        'number.required': 'Field has to be filled',
+        'number.min': 'Field must contain at least of 1 characters',
+        'number.max': 'Field must be no more than 100 characters',
+      }),
   }),
 }), auth, addMovie);
 
 routerMovies.delete('/movies/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number(),
+    movieId: Joi.number().required().min(1).max(100)
+      .messages({
+        'number.required': 'Field has to be filled',
+        'number.min': 'Field must contain at least of 1 characters',
+        'number.max': 'Field must be no more than 100 characters',
+      }),
   }),
 }), auth, deleteMovieById);
 

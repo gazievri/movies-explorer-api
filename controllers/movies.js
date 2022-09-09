@@ -72,7 +72,7 @@ module.exports.deleteMovieById = (req, res, next) => {
       res.status(STATUS_OK).send({ message: `Movie ${movieId} has been removed` });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'CastError') { // если формата id фильма севльного нет, удалить условие и ошибку
         next(new BadRequestError('Movie ID is incorrect'));
         return;
       }
