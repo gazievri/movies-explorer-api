@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -19,6 +20,8 @@ const app = express();
 app.use(cors()); // включить опции после создания сервера и подключения домена
 
 app.use(limiter);
+
+app.use(helmet());
 
 app.use(cookieParser());
 
