@@ -18,11 +18,7 @@ const { PORT = 3000, NODE_ENV, MONGO_PROD_URL } = process.env;
 
 const app = express();
 
-// mongoose.connect(NODE_ENV === 'production' ? MONGO_PROD_URL : MONGO_DEV_URL, {
-//   useNewUrlParser: true,
-// });
-
-mongoose.connect(MONGO_DEV_URL, {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_PROD_URL : MONGO_DEV_URL, {
   useNewUrlParser: true,
 });
 
