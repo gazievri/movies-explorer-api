@@ -30,11 +30,10 @@ routerMovies.post('/movies', celebrate({
         'number.min': 'Field must contain at least of 1 characters',
         'number.max': 'Field must be no more than 100 characters',
       }),
-    year: Joi.number().required().min(2).max(4)
+    year: Joi.number().required().min(2)
       .messages({
         'number.required': 'Field has to be filled',
         'number.min': 'Field must contain at least of 2 characters',
-        'number.max': 'Field must be no more than 4 characters',
       }),
     description: Joi.string().required().min(1).max(100)
       .messages({
@@ -69,11 +68,10 @@ routerMovies.post('/movies', celebrate({
         'string.required': 'Field has to be filled',
         'string.pattern': 'Field must be a link',
       }),
-    movieId: Joi.number().required().min(1).max(100) // проверить формат и исправить валидацию
+    movieId: Joi.number().required().min(1) // проверить формат и исправить валидацию
       .messages({
         'number.required': 'Field has to be filled',
         'number.min': 'Field must contain at least of 1 characters',
-        'number.max': 'Field must be no more than 100 characters',
       }),
   }),
 }), auth, addMovie);
