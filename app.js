@@ -10,12 +10,15 @@ const NotFoundError = require('./errors/not-found-errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { corsOptions } = require('./utils/corsOptions');
 const { handleError } = require('./utils/handleError');
+const { limiter } = require('./utils/limiter');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
 app.use(cors()); // включить опции после создания сервера и подключения домена
+
+app.use(limiter);
 
 app.use(cookieParser());
 
