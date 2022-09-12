@@ -7,13 +7,11 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const router = require('./routes/index');
-const NotFoundError = require('./errors/not-found-errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 // const { corsOptions } = require('./utils/corsOptions');
 const { handleError } = require('./utils/handleError');
 const { limiter } = require('./utils/limiter');
 const { MONGO_DEV_URL } = require('./utils/config');
-const auth = require('./middlewares/auth');
 
 const { PORT = 3000, NODE_ENV, MONGO_PROD_URL } = process.env;
 
