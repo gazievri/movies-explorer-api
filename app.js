@@ -13,6 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { handleError } = require('./utils/handleError');
 const { limiter } = require('./utils/limiter');
 const { MONGO_DEV_URL } = require('./utils/config');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3000, NODE_ENV, MONGO_PROD_URL } = process.env;
 
@@ -23,15 +24,12 @@ mongoose.connect(NODE_ENV === 'production' ? MONGO_PROD_URL : MONGO_DEV_URL, {
 });
 
 app.use(cors()); // включить опции после создания фронта и подключения его к серверу
+app.use(requestLogger); // подключаем логгер запросов
 app.use(limiter);
 app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(requestLogger); // подключаем логгер запросов
 app.use(router);
-app.all('/*', () => {
-  throw new NotFoundError('Requested path not found');
-});
 app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 app.use(handleError);

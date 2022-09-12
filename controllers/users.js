@@ -10,14 +10,13 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
   STATUS_CREATED,
-  STATUS_OK,
 } = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
   const { _id } = req.user;
 
   User.find({ _id })
-    .then((user) => res.status(STATUS_OK).send({ data: user[0] }))
+    .then((user) => res.send({ data: user[0] }))
     .catch(next);
 };
 
@@ -65,11 +64,15 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError(`User ID ${userId} is not found`);
       }
-      res.status(STATUS_OK).send({ data: user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Invalid data passed when updating profile'));
+        return;
+      }
+      if (err.code === 11000) {
+        next(new EmailExistError(`User with email ${email} already exist`));
         return;
       }
       if (err.name === 'CastError') {
@@ -86,12 +89,12 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_PRODUCTION_KEY, { expiresIn: '7d' });
-      res.status(STATUS_OK).cookie('authorization', token, { maxAge: 3600000 * 24 * 7, httpOnly: true }).send({ message: 'Athorization successful' });
+      res.cookie('authorization', token, { maxAge: 3600000 * 24 * 7, httpOnly: true }).send({ message: 'Athorization successful' });
     })
     .catch(next);
 };
 
 module.exports.signout = (req, res) => {
   const userId = req.user._id;
-  res.status(STATUS_OK).clearCookie('authorization').send({ message: `Signout user ${userId} is successful` });
+  res.clearCookie('authorization').send({ message: `Signout user ${userId} is successful` });
 };

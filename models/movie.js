@@ -4,32 +4,22 @@ const cardSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   director: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   duration: {
     type: Number,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   year: {
-    type: Number,
+    type: String,
     required: true,
-    minlength: 2,
-    maxlength: 4,
   },
   description: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   image: {
     type: String,
@@ -69,20 +59,14 @@ const cardSchema = new mongoose.Schema({
   movieId: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   nameRU: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
   nameEN: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 100,
   },
 });
 

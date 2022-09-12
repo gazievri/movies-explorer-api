@@ -1,10 +1,10 @@
 const Movie = require('../models/movie');
 const BadRequestError = require('../errors/bad-request-errors');
 const NotFoundError = require('../errors/not-found-errors');
+const ForbiddenError = require('../errors/forbidden-errors');
 
 const {
   STATUS_CREATED,
-  STATUS_OK,
 } = require('../utils/constants');
 
 module.exports.getAllUserMovies = (req, res, next) => {
@@ -13,7 +13,7 @@ module.exports.getAllUserMovies = (req, res, next) => {
   Movie.find({ owner: _id })
     .then((movies) => {
       if (!movies) { throw new NotFoundError('Movies not found'); }
-      res.status(STATUS_OK).send({ data: movies });
+      res.send({ data: movies });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -59,16 +59,17 @@ module.exports.addMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
-  const { movieId } = req.params;
+  const { id } = req.params;
   const user = req.user._id;
 
-  Movie.find({ owner: user, movieId })
+  Movie.findOne({ id })
     .then((item) => {
       if (item.length === 0) { throw new NotFoundError('Movie not found'); }
-      return item[0].remove();
+      if (item.owner !== user) { throw new ForbiddenError('You can not delete not yours movie'); }
+      return item.remove();
     })
     .then(() => {
-      res.status(STATUS_OK).send({ message: `Movie ${movieId} has been removed` });
+      res.send({ message: `Movie ${id} has been removed` });
     })
     .catch((err) => {
       if (err.name === 'CastError') { // если формата id фильма специального нет, удалить условие и ошибку
