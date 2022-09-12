@@ -60,12 +60,11 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.deleteMovieById = (req, res, next) => {
   const { id } = req.params;
-  const user = req.user._id;
 
-  Movie.findOne({ id })
+  Movie.findById(id)
     .then((item) => {
-      if (item.length === 0) { throw new NotFoundError('Movie not found'); }
-      if (item.owner !== user) { throw new ForbiddenError('You can not delete not yours movie'); }
+      if (!item) { throw new NotFoundError('Movie not found'); }
+      if (item.owner.toString() !== req.user._id) { throw new ForbiddenError('You can not delete not yours movie'); }
       return item.remove();
     })
     .then(() => {
