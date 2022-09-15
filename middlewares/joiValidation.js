@@ -1,4 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
+const { validateId } = require('../utils/validateId');
 
 const movieValidation = celebrate({
   body: Joi.object().keys({
@@ -22,15 +24,19 @@ const movieValidation = celebrate({
       .messages({
         'string.required': 'Field has to be filled',
       }),
-    image: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+    image: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) { return value; }
+      return helpers.message('Field must be a link');
+    })
       .messages({
         'string.required': 'Field has to be filled',
-        'string.pattern': 'Field must be a link',
       }),
-    trailerLink: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+    trailerLink: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) { return value; }
+      return helpers.message('Field must be a link');
+    })
       .messages({
         'string.required': 'Field has to be filled',
-        'string.pattern': 'Field must be a link',
       }),
     nameRU: Joi.string().required()
       .messages({
@@ -40,10 +46,12 @@ const movieValidation = celebrate({
       .messages({
         'string.required': 'Field has to be filled',
       }),
-    thumbnail: Joi.string().required().pattern(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-/]))?/)
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) { return value; }
+      return helpers.message('Field must be a link');
+    })
       .messages({
         'string.required': 'Field has to be filled',
-        'string.pattern': 'Field must be a link',
       }),
     movieId: Joi.string().required() // проверить формат и исправить валидацию
       .messages({
@@ -54,7 +62,7 @@ const movieValidation = celebrate({
 
 const movieIdValidation = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required()
+    id: Joi.string().required().custom(validateId, 'ObjectId validation')
       .messages({
         'string.required': 'Field has to be filled',
       }),
