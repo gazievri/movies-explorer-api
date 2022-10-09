@@ -1,5 +1,5 @@
 const corsOptions = {
-  origin: 'https://gazievri.mesto.nomoredomains.sbs',
+  origin: 'https://movie.gazievri.nomoredomains.icu/',
   credentials: true,
   optionsSuccessStatus: 200,
 };
