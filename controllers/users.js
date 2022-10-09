@@ -89,7 +89,9 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_PRODUCTION_KEY, { expiresIn: '7d' });
-      res.cookie('authorization', token, { maxAge: 3600000 * 24 * 7, httpOnly: true }).send({ message: 'Athorization successful' });
+      res.cookie('authorization', token, {
+        maxAge: 3600000 * 24 * 7, httpOnly: true, secure: true, sameSite: 'none',
+      }).send({ message: 'Athorization successful' });
     })
     .catch(next);
 };
