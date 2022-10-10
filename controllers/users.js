@@ -98,5 +98,5 @@ module.exports.login = (req, res, next) => {
 
 module.exports.signout = (req, res) => {
   const userId = req.user._id;
-  res.clearCookie('authorization').send({ message: `Signout user ${userId} is successful` });
+  res.clearCookie('authorization', { secure: true, sameSite: 'none' }).send({ message: `Signout user ${userId} is successful` });
 };
